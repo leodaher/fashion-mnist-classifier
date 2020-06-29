@@ -1,5 +1,6 @@
 import tensorflow as tf
 from tensorflow import keras
+import matplotlib.pyplot as plt
 
 epochs = 10
 
@@ -36,10 +37,26 @@ def main():
               metrics=['accuracy'])
 
     # Train model
-    model.fit(x=x_train, y=y_train, epochs=epochs)
+    history = model.fit(x=x_train, y=y_train, epochs=epochs, validation_data=(x_test, y_test))
 
-    # Test model
-    test_loss, test_acc = model.evaluate(x_test,  y_test, verbose=2)
+    # list all data in history
+    print(history.history.keys())
+    # summarize history for accuracy
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
+    plt.title('Acurácia do modelo')
+    plt.ylabel('Acurácia')
+    plt.xlabel('Época')
+    plt.legend(['Treino', 'Validação'], loc='upper left')
+    plt.show()
+    # summarize history for loss
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('Perda do modelo')
+    plt.ylabel('Perda')
+    plt.xlabel('Época')
+    plt.legend(['Treino', 'Validação'], loc='upper left')
+    plt.show()
 
 if __name__ == '__main__':
     main()
